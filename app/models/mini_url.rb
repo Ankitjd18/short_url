@@ -9,6 +9,7 @@ class MiniUrl
   belongs_to :user, optional: true
 
   validates :url_code, presence: true, uniqueness: true
+  validates :url, presence: true
 
   index({url_code: 1}, {name: 'url_code_index'})
   index({url: 1}, {name: 'url_index'})
