@@ -24,5 +24,23 @@ module TokenHelper
       Rails.logger.error "JWT Error - #{e}"
       false
     end
+
+    # method to check for a blacklisted token
+    def check_blacklist(token)
+      if $token_redis.get(token)
+        Rails.logger.error "Blacklisted token received -- #{token}"
+        raise Exceptions::AuthorizationError.new("token expired")
+      end
+    rescue Redis::CannotConnectError, Redis::ConnectionError, Redis::TimeoutError => e
+      Rails.logger.error "Redis Error - #{e.as_json}"
+    end
+
+    # method to add unexpired token to a blacklist
+    def add_blacklist(token, type)
+      ttl = 86400
+      $token_redis.set(token, type, options = {:ex => ttl})
+    rescue Redis::CannotConnectError, Redis::ConnectionError, Redis::TimeoutError => e
+      Rails.logger.error "Redis Error - #{e.as_json}"
+    end
   end
 end

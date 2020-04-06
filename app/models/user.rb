@@ -4,7 +4,7 @@ class User
 
   field :username, type: String
   field :password_digest
-  field :url_limit, type: Integer, default: 50
+  field :url_limit, type: Integer, default: DEFAULT_URL_LIMIT
 
   has_many :mini_urls
 
@@ -29,5 +29,6 @@ class User
     tokens['refresh'] = Hash.new
     tokens['refresh']['token'] = TokenHelper.jwt_encode(self._id, refresh_expiry_timestamp, true)
     tokens['refresh']['expiry_time'] = refresh_expiry_timestamp
+    tokens
   end
 end

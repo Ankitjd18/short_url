@@ -3,6 +3,23 @@ class ApplicationController < ActionController::API
   rescue_from Exceptions::InvalidHeaderError, Exceptions::EmptyObjectError, Exceptions::WrongHeaderError, with: :invalid_exceptions
   rescue_from Exceptions::AuthenticationError, with: :authenticated_exception
 
+  after_action :set_access_control_headers
+
+  def set_access_control_headers
+    headers['Access-Control-Allow-Origin'] = '*'
+    headers['Access-Control-Request-Method'] = '*'
+  end
+
+  protected
+  # user authentication for actions
+  def authenticate_user
+    if current_user
+      true
+    else
+      raise Exceptions::AuthorizationError.new('invalid user authorization')
+    end
+  end
+
   def current_user
     if request.headers['Authorization'].present?
       # decode access_token

@@ -1,0 +1,2 @@
+BASE_URL = "localhost:3000"
+DEFAULT_URL_LIMIT = 50

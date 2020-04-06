@@ -24,4 +24,22 @@ module QueryHelper
 		end
 	end
 
+	# class for headers validation methods
+	class HeaderValidationChecker
+		def initialize(headers, *headers_name)
+			@headers = headers
+			@headers_name = headers_name
+		end
+
+		# method to null check headers
+		def check_null_headers
+			@headers_name.each do |p|
+				unless @headers[p].present? && !@headers[p].nil? && !@headers[p].empty?
+					raise Exceptions::WrongHeaderError.new(p)
+				end
+			end
+			true
+		end
+	end
+
 end
