@@ -8,6 +8,8 @@ Rails.application.routes.draw do
       post 'login' => 'sessions#login'
       put 'token/refresh' => 'sessions#refresh_token'
       delete 'logout' => 'sessions#destroy'
+      get 'miniurls' => 'mini_url#url_list'
+      delete 'miniurl' => 'mini_url#remove'
     end
   end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

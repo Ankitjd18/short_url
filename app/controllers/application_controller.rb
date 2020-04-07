@@ -25,7 +25,7 @@ class ApplicationController < ActionController::API
       # decode access_token
       payload = TokenHelper.jwt_decode(request.headers['Authorization'])
       # checks for payload
-      unless payload
+      unless payload && !payload['refresh']
         raise Exceptions::InvalidHeaderError.new("Authorization")
       end
       @user = User.find(payload['user_id']) unless @user

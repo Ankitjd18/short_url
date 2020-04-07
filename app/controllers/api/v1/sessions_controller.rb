@@ -56,8 +56,8 @@ class Api::V1::SessionsController < ApplicationController
     TokenHelper.add_blacklist(request.headers['RefreshToken'],"refresh")
     render json: {message: "Successfully logged out!!"}, status: 200, scope: nil
   rescue Exceptions::AuthenticationError, Exceptions::WrongHeaderError => e
-    render json: {error: e}, status: 400, scope: nil
+    render json: {error: e}, status: 401, scope: nil
   rescue JWT::DecodeError, JWT::VerificationError => e
-    render json:{error: e}, status: 401, scope: nil
+    render json:{error: e}, status: 400, scope: nil
   end
 end
